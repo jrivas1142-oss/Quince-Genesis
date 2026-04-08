@@ -11,87 +11,158 @@
         .font-body { font-family: 'Quicksand', sans-serif; }
 
         body {
-            background: linear-gradient(rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65)), 
+            background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), 
                         url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1920');
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
         }
 
+        /* Carrusel horizontal */
+        .carousel-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 1.5rem;
+            padding: 2.5rem 0;
+            scrollbar-width: none;
+        }
+        .carousel-container::-webkit-scrollbar { display: none; }
+
+        /* Tarjetas más grandes y bordes ultrafinos */
         .glass-card {
-            background: rgba(255, 255, 255, 0.9);
+            flex: 0 0 340px; /* Tamaño aumentado */
+            scroll-snap-align: center;
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(229, 179, 163, 0.3);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            /* Borde ultrafino y sutil */
+            border: 0.2px solid rgba(176, 109, 133, 0.1); 
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.02);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        .btn-download {
-            background: #b06d85;
+        .glass-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+        }
+
+        #viewer { 
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0,0,0,0.98); 
+            z-index: 100;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .viewer-btn {
+            background: rgba(255,255,255,0.05);
             color: white;
-            transition: all 0.3s ease;
+            border: 0.2px solid rgba(255,255,255,0.2);
+            padding: 12px 18px;
+            border-radius: 4px;
+            transition: all 0.3s;
         }
-
-        /* Estilo para el visor de imagen */
-        #viewer { transition: all 0.3s ease; display: none; }
+        .viewer-btn:hover { background: #b06d85; border-color: transparent; }
     </style>
 </head>
 <body class="font-body min-h-screen text-[#1a2e23]">
 
-    <header class="py-16 text-center max-w-4xl mx-auto px-6">
-        <div class="text-4xl mb-4">👑</div>
-        <h1 class="text-5xl md:text-7xl font-aurora text-[#0f1a14] mb-2">Génesis Milena</h1>
-        <p class="text-[10px] tracking-[0.5em] font-bold uppercase text-[#4a554f]">Mis Quince Años • 2026</p>
+    <header class="py-12 text-center px-6">
+        <div class="text-3xl mb-2 text-[#b06d85]">👑</div>
+        <h1 class="text-6xl md:text-7xl font-aurora text-[#0f1a14] mb-1">Génesis Milena</h1>
+        <p class="text-[9px] tracking-[0.7em] font-bold uppercase text-[#4a554f]">Memorias de una Princesa</p>
     </header>
 
-    <main class="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 p-6 mb-24">
-        
-        <div class="glass-card p-5">
-            <div class="overflow-hidden rounded-lg border-[1.5px] border-white shadow-md">
-                <img src="foto1.jpg" alt="Recuerdo 1" class="w-full h-[550px] object-cover cursor-zoom-in" onclick="viewImage(this.src)">
+    <div class="max-w-[1200px] mx-auto px-8">
+        <main id="slider" class="carousel-container">
+            
+            <div class="glass-card p-2">
+                <img src="Gemini_Generated_Image_aq2yabaq2yabaq2y.png" class="gallery-img w-full h-[480px] object-cover rounded-sm cursor-pointer" onclick="openViewer(0)">
+                <div class="py-4 text-center">
+                    <p class="font-aurora text-3xl">Esencia</p>
+                </div>
             </div>
-            <div class="mt-6 text-center">
-                <h3 class="font-aurora text-3xl text-[#0f1a14] mb-4">Recuerdo Especial</h3>
-                <a href="foto1.jpg" download="Genesis_Milena_1.jpg" class="btn-download block w-full py-3 rounded-lg font-bold uppercase text-[9px] tracking-widest">
-                    Descargar Foto HD
-                </a>
-            </div>
-        </div>
 
-        <div class="glass-card p-5">
-            <div class="overflow-hidden rounded-lg border-[1.5px] border-white shadow-md">
-                <img src="Gemini_Generated_Image_aq2yabaq2yabaq2y.png" alt="Recuerdo 2" class="w-full h-[550px] object-cover cursor-zoom-in" onclick="viewImage(this.src)">
-            </div>
-            <div class="mt-6 text-center">
-                <h3 class="font-aurora text-3xl text-[#0f1a14] mb-4">Momento Mágico</h3>
-                <a href="foto2.jpg" download="Genesis_Milena_2.jpg" class="btn-download block w-full py-3 rounded-lg font-bold uppercase text-[9px] tracking-widest">
-                    Descargar Foto HD
-                </a>
-            </div>
-        </div>
+            <div class="glass-card p-2">
+                <img src="Gemini_Generated_Image_iuuzpxiuuzpxiuuz.png" class="gallery-img w-full h-[480px] object-cover rounded-sm cursor-pointer" onclick="openViewer(1)">
+                <div class="py-4 text-center">
+                    <p class="font-aurora text-3xl">Dulzura</p>
+                </div>
+            </div>z
 
-    </main>
+            <div class="glass-card p-2">
+                <img src="https://googleusercontent.com/image_generation_content/1" class="gallery-img w-full h-[480px] object-cover rounded-sm cursor-pointer" onclick="openViewer(2)">
+                <div class="py-4 text-center">
+                    <p class="font-aurora text-3xl">Magia</p>
+                </div>
+            </div>
 
-    <div id="viewer" class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 cursor-pointer" onclick="closeViewer()">
-        <img id="viewer-img" src="" class="max-w-full max-h-[90vh] rounded shadow-2xl border-2 border-white/20">
-        <p class="absolute bottom-5 text-white/50 text-[10px] uppercase tracking-widest">Toca para cerrar</p>
+        </main>
     </div>
 
-    <footer class="py-12 text-center opacity-60">
-        <p class="text-[9px] font-bold uppercase tracking-[0.4em]">Quito, Ecuador • 2026</p>
+    <div id="viewer">
+        <div class="absolute top-6 right-6 flex gap-3">
+            <a id="download-link" href="#" download class="viewer-btn text-[9px] uppercase font-bold tracking-widest">Descargar</a>
+            <button onclick="closeViewer()" class="viewer-btn">✕</button>
+        </div>
+
+        <div class="flex items-center justify-between w-full px-4">
+            <button onclick="changeImage(-1)" class="viewer-btn text-2xl px-6">←</button>
+            <img id="viewer-img" src="" class="max-w-[85vw] max-h-[75vh] shadow-2xl">
+            <button onclick="changeImage(1)" class="viewer-btn text-2xl px-6">→</button>
+        </div>
+
+        <p id="image-counter" class="text-white/30 text-[10px] uppercase tracking-widest mt-10"></p>
+    </div>
+
+    <footer class="py-14 text-center opacity-40 text-[8px] font-bold uppercase tracking-[0.4em]">
+        Quito, Ecuador • 2026
     </footer>
 
     <script>
-        function viewImage(src) {
-            document.getElementById('viewer-img').src = src;
-            document.getElementById('viewer').style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Bloquea el scroll
+        const images = document.querySelectorAll('.gallery-img');
+        const viewer = document.getElementById('viewer');
+        const viewerImg = document.getElementById('viewer-img');
+        const downloadLink = document.getElementById('download-link');
+        const counter = document.getElementById('image-counter');
+        let currentIndex = 0;
+
+        function openViewer(index) {
+            currentIndex = index;
+            updateViewer();
+            viewer.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
         }
 
         function closeViewer() {
-            document.getElementById('viewer').style.display = 'none';
-            document.body.style.overflow = 'auto'; // Libera el scroll
+            viewer.style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
+
+        function updateViewer() {
+            const currentSrc = images[currentIndex].src;
+            viewerImg.src = currentSrc;
+            downloadLink.href = currentSrc;
+            downloadLink.download = `Genesis_Milena_${currentIndex + 1}.jpg`;
+            counter.innerText = `Imagen ${currentIndex + 1} de ${images.length}`;
+        }
+
+        function changeImage(step) {
+            currentIndex += step;
+            if (currentIndex >= images.length) currentIndex = 0;
+            if (currentIndex < 0) currentIndex = images.length - 1;
+            updateViewer();
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") closeViewer();
+            if (e.key === "ArrowRight") changeImage(1);
+            if (e.key === "ArrowLeft") changeImage(-1);
+        });
     </script>
 </body>
 </html>
