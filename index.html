@@ -13,85 +13,99 @@
         body {
             background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), 
                         url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1920');
-            background-size: cover; 
-            background-attachment: fixed; 
-            background-position: center;
+            background-size: cover; background-attachment: fixed; background-position: center;
         }
         
-        /* Carrusel y Galería - Tamaño Uniforme */
-        .img-standard {
-            width: 100%;
-            height: 320px; /* Altura igual a momentos favoritos */
-            object-fit: cover;
-            cursor: pointer;
-            transition: transform 0.3s ease;
+        /* Imágenes de Galería: Puras y acopladas */
+        .img-grid-item {
+            width: 100%; height: 320px; object-fit: cover;
+            cursor: pointer; transition: opacity 0.3s ease;
+            border-radius: 2px;
+        }
+        .img-grid-item:hover { opacity: 0.85; }
+
+        /* Navegación Adaptable con letra un poco más grande */
+        .nav-container {
+            display: flex; justify-content: center; gap: 6px;
+            overflow-x: auto; padding: 10px; margin-bottom: 25px;
+            scrollbar-width: none; -webkit-overflow-scrolling: touch;
+        }
+        .nav-container::-webkit-scrollbar { display: none; }
+
+        .nav-link {
+            font-size: 11px; /* Aumentado de 9px a 11px */
+            font-weight: bold; letter-spacing: 0.12em;
+            text-transform: uppercase; color: #4a554f; white-space: nowrap;
+            padding: 10px 16px; border-bottom: 2px solid transparent;
+            transition: all 0.3s ease; cursor: pointer;
+        }
+        .nav-link.active {
+            color: #b06d85; border-bottom: 2px solid #b06d85;
         }
 
-        .carousel-container {
-            display: flex; 
-            overflow-x: auto; 
-            scroll-snap-type: x mandatory;
-            gap: 0.5rem; 
-            padding: 1rem 0; 
-            scrollbar-width: none; 
-            -webkit-overflow-scrolling: touch;
-        }
-        .carousel-container::-webkit-scrollbar { display: none; }
-        
-        .carousel-item {
-            flex-shrink: 0; 
-            width: 85%; 
-            scroll-snap-align: center;
-        }
-        
-        @media (min-width: 768px) {
-            .carousel-item { width: 260px; }
+        /* Contenido por pestañas */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Visor Fullscreen */
         #viewer { 
-            display: none; 
-            position: fixed; 
-            inset: 0; 
-            background: #000; 
-            z-index: 100; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.97); 
+            z-index: 100; flex-direction: column; align-items: center; justify-content: center;
         }
 
         .btn-download {
-            background: #b06d85; 
-            color: white; 
-            padding: 14px 40px; 
-            border-radius: 4px;
-            font-size: 13px; 
-            font-weight: bold; 
-            letter-spacing: 0.2em; 
-            text-transform: uppercase;
-            box-shadow: 0 4px 20px rgba(176, 109, 133, 0.4);
+            background: #b06d85; color: white; padding: 15px 45px; border-radius: 4px;
+            font-size: 12px; font-weight: bold; letter-spacing: 0.2em; text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(176, 109, 133, 0.4);
         }
     </style>
 </head>
 <body class="font-body min-h-screen text-[#1a2e23] pb-20">
 
-    <header class="pt-16 pb-10 text-center px-6">
+    <header class="pt-16 pb-6 text-center px-6">
         <div class="text-3xl mb-3 text-[#b06d85]">👑</div>
         <h1 class="text-6xl md:text-8xl font-aurora text-[#0f1a14] mb-2">Génesis Milena</h1>
-        <p class="text-[9px] tracking-[0.6em] font-bold uppercase text-[#4a554f]">Mis Quince Años • 2026</p>
+        <p class="text-[12px] tracking-[0.6em] font-bold uppercase text-[#4a554f] mb-8">Mis Quince Años • Tosagua 2026</p>
+        
+        <nav class="nav-container max-w-2xl mx-auto">
+            <div class="nav-link active" onclick="switchTab('galeria', this)">Galería Completa</div>
+            <div class="nav-link" onclick="switchTab('sesion', this)">Sesión de Fotos</div>
+            <div class="nav-link" onclick="switchTab('grupales', this)">Fotos Grupales</div>
+            <div class="nav-link" onclick="switchTab('videos', this)">Videos</div>
+        </nav>
     </header>
 
-    <section class="max-w-[1100px] mx-auto px-4 mb-20">
-        <h2 class="font-aurora text-4xl text-center mb-6 text-[#b06d85]">Momentos Favoritos</h2>
-        <div id="carrusel-dinamico" class="carousel-container">
-            </div>
-    </section>
+    <main id="tab-galeria" class="tab-content active">
+        <section class="max-w-[1100px] mx-auto px-2">
+            <div id="grid-galeria" class="grid grid-cols-2 lg:grid-cols-3 gap-1"></div>
+        </section>
+    </main>
 
-    <section class="max-w-[1100px] mx-auto px-4">
-        <h2 class="font-aurora text-4xl text-center mb-10 text-[#b06d85]">Galería Completa</h2>
-        <div id="galeria-dinamica" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+    <main id="tab-sesion" class="tab-content">
+        <section class="max-w-[1100px] mx-auto px-2">
+            <div id="grid-sesion" class="grid grid-cols-2 lg:grid-cols-3 gap-1"></div>
+        </section>
+    </main>
+
+    <main id="tab-grupales" class="tab-content">
+        <section class="max-w-[1100px] mx-auto px-2">
+            <div id="grid-grupales" class="grid grid-cols-2 lg:grid-cols-3 gap-1"></div>
+        </section>
+    </main>
+
+    <main id="tab-videos" class="tab-content">
+        <section class="max-w-[800px] mx-auto px-6">
+            <div class="aspect-video bg-black rounded shadow-2xl overflow-hidden mb-6">
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
             </div>
-    </section>
+            <p class="text-center text-[10px] uppercase tracking-widest opacity-40">Video Especial de la Quinceañera y de la fiesta </p>
+        </section>
+    </main>
 
     <div id="viewer">
         <div class="absolute top-6 w-full px-8 flex justify-between items-center z-10">
@@ -104,7 +118,7 @@
             <button onclick="changeImage(1)" class="text-white/20 text-4xl px-4">→</button>
         </div>
         <div class="mt-12">
-            <a id="download-link" href="#" download class="btn-download">Descargar</a>
+            <a id="download-link" href="#" download class="btn-download">Descargar Foto</a>
         </div>
     </div>
 
@@ -113,77 +127,77 @@
     </footer>
 
     <script>
-        const misFotos = [
+        // CONFIGURACIÓN DE FOTOS
+        const fotos_sesion = [
             "Gemini_Generated_Image_aq2yabaq2yabaq2y.png",
+            "Imagen2.jpg",
+            "Imagen3.jpg"
+        ];
+        const fotos_grupales = [
             "Gemini_Generated_Image_iuuzpxiuuzpxiuuz.png",
             "WhatsApp Image 2026-04-07 at 23.54.38.jpeg",
-            "Imagen2.jpg",
-            "Imagen3.jpg",
-            "Imagen6.jpg",
-            "Imagen5.jpg",
-            "Imagen7.jpg",
+            "Imagen6.jpg"
         ];
+        
+        const fotos_todas = [...fotos_sesion, ...grupales];
 
-        const carrusel = document.getElementById('carrusel-dinamico');
-        const galeria = document.getElementById('galeria-dinamica');
-        const viewer = document.getElementById('viewer');
-        const viewerImg = document.getElementById('viewer-img');
-        const downloadLink = document.getElementById('download-link');
-        const counter = document.getElementById('image-counter');
+        let currentList = fotos_todas;
         let currentIndex = 0;
 
-        misFotos.forEach((foto, index) => {
-            // Inyectar en Carrusel
-            carrusel.innerHTML += `
-                <div class="carousel-item">
-                    <img src="${foto}" class="img-standard" onclick="openViewer(${index})">
-                </div>`;
+        function render(list, id) {
+            const container = document.getElementById(id);
+            list.forEach((foto, i) => {
+                container.innerHTML += `<img src="${foto}" class="img-grid-item" onclick="openViewer(${i}, '${id}')">`;
+            });
+        }
 
-            // Inyectar en Galería (Usa la misma clase img-standard)
-            galeria.innerHTML += `
-                <img src="${foto}" class="img-standard hover:opacity-90 transition-opacity" onclick="openViewer(${index})">`;
-        });
+        render(fotos_todas, 'grid-galeria');
+        render(fotos_sesion, 'grid-sesion');
+        render(fotos_grupales, 'grid-grupales');
 
-        function openViewer(index) {
+        function switchTab(tab, el) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            el.classList.add('active');
+        }
+
+        function openViewer(index, gridId) {
+            if(gridId === 'grid-sesion') currentList = fotos_sesion;
+            else if(gridId === 'grid-grupales') currentList = fotos_grupales;
+            else currentList = fotos_todas;
+
             currentIndex = index;
             updateViewer();
-            viewer.style.display = 'flex';
+            document.getElementById('viewer').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
 
         function closeViewer() {
-            viewer.style.display = 'none';
+            document.getElementById('viewer').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
 
         function updateViewer() {
-            const currentSrc = misFotos[currentIndex];
-            viewerImg.src = currentSrc;
-            downloadLink.href = currentSrc;
-            downloadLink.download = `Genesis_15_Años_${currentIndex + 1}.jpg`;
-            counter.innerText = `${currentIndex + 1} de ${misFotos.length}`;
+            const src = currentList[currentIndex];
+            document.getElementById('viewer-img').src = src;
+            document.getElementById('download-link').href = src;
+            document.getElementById('image-counter').innerText = `${currentIndex + 1} de ${currentList.length}`;
         }
 
         function changeImage(step) {
-            currentIndex += step;
-            if (currentIndex >= misFotos.length) currentIndex = 0;
-            if (currentIndex < 0) currentIndex = misFotos.length - 1;
+            currentIndex = (currentIndex + step + currentList.length) % currentList.length;
             updateViewer();
         }
 
-        // Swipe y Teclado
-        let touchStartX = 0;
-        viewer.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
-        viewer.addEventListener('touchend', e => {
-            let touchEndX = e.changedTouches[0].screenX;
-            if (touchStartX - touchEndX > 60) changeImage(1);
-            if (touchEndX - touchStartX > 60) changeImage(-1);
-        });
         window.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") closeViewer();
             if (e.key === "ArrowRight") changeImage(1);
             if (e.key === "ArrowLeft") changeImage(-1);
+            if (e.key === "Escape") closeViewer();
         });
     </script>
 </body>
 </html>
+
+       
+            
