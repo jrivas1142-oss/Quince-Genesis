@@ -11,212 +11,225 @@
         .font-body { font-family: 'Quicksand', sans-serif; }
         
         body {
-            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), 
+            background: linear-gradient(rgba(255, 255, 255, 0.60), rgba(255, 255, 255, 0.92)), 
                         url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1920');
-            background-size: cover; background-attachment: fixed; background-position: center;
+            background-size: cover; 
+            background-attachment: fixed; 
+            background-position: center;
         }
-        
-        /* Imágenes puras acopladas */
+
+        .card-special {
+            min-width: 260px;
+            height: 380px;
+            margin: 0 10px;
+            border: 2px solid #d4af37;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            background: white;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            background-image: url('https://www.transparentpng.com/download/floral/pink-flowers-border-png-3.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            padding: 6px;
+        }
+
+        .card-special img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            display: block;
+        }
+
+        .carrusel-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 15px 0;
+            scrollbar-width: none;
+        }
+        .carrusel-container::-webkit-scrollbar { display: none; }
+
         .img-grid {
             width: 100%; height: 280px; object-fit: cover;
             cursor: pointer; transition: opacity 0.3s ease;
         }
-        .img-grid:hover { opacity: 0.8; }
-
-        /* Navegación por Pestañas */
-        .nav-container {
-            display: flex; justify-content: center; gap: 10px;
-            overflow-x: auto; padding: 10px; margin-bottom: 30px;
-            scrollbar-width: none;
-        }
-        .nav-container::-webkit-scrollbar { display: none; }
 
         .nav-link {
-            font-size: 9px; font-weight: bold; letter-spacing: 0.15em;
-            text-transform: uppercase; color: #4a554f; white-space: nowrap;
-            padding: 8px 15px; border-bottom: 2px solid transparent;
-            transition: all 0.3s ease; cursor: pointer;
+            font-size: 11px; font-weight: bold; letter-spacing: 0.1em;
+            text-transform: uppercase; color: #1a2e23; white-space: nowrap;
+            padding: 8px 14px; border-bottom: 2px solid transparent;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 4px;
+            transition: all 0.3s ease;
         }
-        .nav-link.active {
-            color: #b06d85; border-bottom: 2px solid #b06d85;
-        }
-
-        /* Control de Visibilidad */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.4s ease-in-out; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
+        .nav-link.active { 
+            color: white; 
+            background: #b66481;
+            border-bottom: 2px solid #d4af37; 
         }
 
         #viewer { 
-            display: none; position: fixed; inset: 0; background: #000; 
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); 
             z-index: 100; flex-direction: column; align-items: center; justify-content: center;
         }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<body class="font-body min-h-screen text-[#1a2e23] pb-20">
+<body class="font-body min-h-screen text-[#1a2e23] pb-10">
 
-    <header class="pt-16 pb-4 text-center px-6">
-        <div class="text-3xl mb-3 text-[#b06d85]">👑</div>
-        <h1 class="text-6xl md:text-8xl font-aurora text-[#0f1a14] mb-2">Génesis Milena</h1>
-        <p class="text-[9px] tracking-[0.6em] font-bold uppercase text-[#4a554f] mb-8">Mis Quince Años • 2026</p>
+    <header class="pt-6 pb-2 text-center px-6">
+        <h1 class="text-5xl md:text-7xl font-aurora text-[#0f1a14] mb-1">Génesis Milena</h1>
         
-        <nav class="nav-container max-w-2xl mx-auto">
-            <div class="nav-link active" onclick="switchTab('galeria', this)">Galería Completa</div>
-            <div class="nav-link" onclick="switchTab('sesion', this)">Sesión de Fotos</div>
-            <div class="nav-link" onclick="switchTab('grupales', this)">Fotos Grupales</div>
-            <div class="nav-link" onclick="switchTab('videos', this)">Videos</div>
-        </nav>
+        <div class="mb-6 inline-flex items-center gap-3 bg-white/80 px-8 py-1 rounded-full border border-[#d4af37]/30 shadow-sm">
+            <span class="text-[#b66481] text-xl">❤</span>
+            <p class="text-[26px] font-aurora text-black leading-none pt-1">
+                Mis Quince Años 
+            </p>
+            <span class="text-[#b66481] text-xl">❤</span>
+        </div>
     </header>
 
+    <section class="max-w-6xl mx-auto mb-8">
+        <h2 class="text-center font-aurora text-5xl text-[#b06d85] mb-2" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">Momentos Especiales</h2>
+        <div class="relative px-12">
+            <button onclick="scrollCarrusel(-300)" class="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-lg text-[#b06d85] border border-gray-100">❮</button>
+            <div id="carrusel-especial" class="carrusel-container"></div>
+            <button onclick="scrollCarrusel(300)" class="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-lg text-[#b06d85] border border-gray-100">❯</button>
+        </div>
+    </section>
+
+    <nav class="flex justify-center gap-2 mb-6 overflow-x-auto px-4">
+        <div class="nav-link active" onclick="switchTab('galeria', this)">Galería Completa</div>
+        <div class="nav-link" onclick="switchTab('sesion', this)">Sesión de Fotos</div>
+        <div class="nav-link" onclick="switchTab('grupales', this)">Fotos Grupales</div>
+        <div class="nav-link" onclick="switchTab('videos', this)">Videos</div>
+    </nav>
+
     <main id="tab-galeria" class="tab-content active">
-        <section class="max-w-[1200px] mx-auto px-2">
-            <div id="grid-galeria" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1"></div>
+        <section class="max-w-[1100px] mx-auto px-2">
+            <div id="grid-galeria" class="grid grid-cols-2 lg:grid-cols-3 gap-1"></div>
         </section>
     </main>
 
     <main id="tab-sesion" class="tab-content">
-        <section class="max-w-[1200px] mx-auto px-2">
-            <div id="grid-sesion" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1"></div>
+        <section class="max-w-[1100px] mx-auto px-2">
+            <div id="grid-sesion" class="grid grid-cols-2 lg:grid-cols-3 gap-1"></div>
         </section>
     </main>
 
     <main id="tab-grupales" class="tab-content">
-        <section class="max-w-[1200px] mx-auto px-2">
-            <div id="grid-grupales" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1"></div>
+        <section class="max-w-[1100px] mx-auto px-2">
+            <div id="grid-grupales" class="grid grid-cols-2 lg:grid-cols-3 gap-1"></div>
         </section>
     </main>
 
     <main id="tab-videos" class="tab-content">
         <section class="max-w-[800px] mx-auto px-6">
-            <div class="grid grid-cols-1 gap-6">
-                <div class="aspect-video bg-black rounded shadow-2xl overflow-hidden">
-                    <iframe class="w-full h-full" src="Video Project.mp4" frameborder="0" allowfullscreen></iframe>
-                </div>
-                <p class="text-center text-[10px] uppercase tracking-widest opacity-40">Resumen de la Fiesta</p>
+            <div class="aspect-video bg-black rounded shadow-2xl overflow-hidden mb-6">
+                <video class="w-full h-full" controls>
+                    <source src="Video Project.mp4" type="video/mp4">
+                    Tu navegador no soporta videos.
+                </video>
             </div>
         </section>
     </main>
 
     <div id="viewer">
-        <div class="absolute top-6 w-full px-8 flex justify-between items-center">
-            <p id="image-counter" class="text-white/40 text-[10px] uppercase tracking-widest font-bold"></p>
-            <button onclick="closeViewer()" class="text-white text-4xl p-2">&times;</button>
+        <button onclick="closeViewer()" class="absolute top-6 right-8 text-white text-5xl">&times;</button>
+        <div class="flex items-center justify-between w-full px-4">
+            <button onclick="changeImage(-1)" class="text-white/50 text-5xl">❮</button>
+            <img id="viewer-img" src="" class="max-w-[90vw] max-h-[75vh] border-2 border-white/20 shadow-2xl">
+            <button onclick="changeImage(1)" class="text-white/50 text-5xl">❯</button>
         </div>
-        <div class="flex items-center justify-between w-full px-2">
-            <button onclick="changeImage(-1)" class="text-white/20 text-4xl px-4">←</button>
-            <img id="viewer-img" src="" class="max-w-[95vw] max-h-[70vh] shadow-2xl">
-            <button onclick="changeImage(1)" class="text-white/20 text-4xl px-4">→</button>
-        </div>
-        <div class="mt-12">
-            <a id="download-link" href="#" download class="bg-[#b06d85] text-white px-10 py-3 rounded uppercase text-[12px] font-bold tracking-widest shadow-lg">Descargar</a>
+        <div class="mt-8">
+            <a id="download-link" href="#" download class="bg-[#b06d85] text-white px-12 py-4 rounded-full font-bold uppercase tracking-widest shadow-xl">Descargar Foto</a>
         </div>
     </div>
 
-    <footer class="mt-24 py-10 text-center border-t border-[#b06d85]/10">
-        <p class="text-[8px] font-bold uppercase tracking-[0.5em] text-[#b06d85]">Génesis Milena • 2026</p>
-    </footer>
-
     <script>
-        // --- CONFIGURACIÓN DE LAS FOTOS POR CATEGORÍA CORREGIDA ---
-        // Nombres exactos copiados de tu imagen
-
-        // Sesión de Fotos (Ejemplo: las que tienen nombres generados y retrato)
-        const fotosSesion = [
-            "Gemini_Generated_Image_aq2yabaq2yabaq2y.png", 
+        const fotos_especiales = [
+            "Gemini_Generated_Image_aq2yabaq2yabaq2y.png",
             "Gemini_Generated_Image_iuuzpxiuuzpxiuuz.png",
-            "Imagen2.jpg"
-        ];
-
-        // Fotos Grupales (Ejemplo: la de WhatsApp y otras)
-        const fotosGrupales = [
-            "WhatsApp Image 2026-04-07 at 23.54.38.jpeg",
+            "Imagen2.jpg",
             "Imagen3.jpg",
-            "Imagen5.jpg"
+            "Imagen5.jpg",
+            "Imagen6.jpg"
         ];
 
-        // Galería Completa (Incluye todas)
-        const fotosGaleria = [
-            ...fotosSesion,
-            ...fotosGrupales,
-            "Imagen6.jpg",
-            "Imagen7.jpg"
-        ];
+        const fotos_sesion = ["Gemini_Generated_Image_aq2yabaq2yabaq2y.png", "Gemini_Generated_Image_iuuzpxiuuzpxiuuz.png", "Imagen2.jpg"];
+        const fotos_grupales = ["WhatsApp Image 2026-04-07 at 23.54.38.jpeg", "Imagen3.jpg", "Imagen5.jpg"];
+        const fotos_todas = [...fotos_sesion, ...fotos_grupales, "Imagen6.jpg", "Imagen7.jpg"];
 
-        // Variables de control
-        let currentList = fotosGaleria; 
+        let currentList = fotos_todas;
         let currentIndex = 0;
 
-        // Inyectar fotos automáticamente en sus respectivos contenedores
-        function renderGrid(list, containerId) {
-            const container = document.getElementById(containerId);
-            list.forEach((foto, index) => {
-                // Añadimos onerror para depuración si una imagen no carga
-                container.innerHTML += `<img src="${foto}" class="img-grid" onerror="console.error('No se pudo cargar: ${foto}'); this.src='https://via.placeholder.com/320?text=Error'" onclick="openViewer(${index}, '${containerId}')">`;
-            });
+        const carrusel = document.getElementById('carrusel-especial');
+        fotos_especiales.forEach((src, i) => {
+            carrusel.innerHTML += `
+                <div class="card-special">
+                    <img src="${src}" onclick="openViewer(${i}, 'especial')">
+                </div>`;
+        });
+
+        function render(list, id) {
+            const container = document.getElementById(id);
+            if(container) {
+                list.forEach((foto, i) => {
+                    container.innerHTML += `<img src="${foto}" class="img-grid" onclick="openViewer(${i}, '${id}')">`;
+                });
+            }
+        }
+        render(fotos_todas, 'grid-galeria');
+        render(fotos_sesion, 'grid-sesion');
+        render(fotos_grupales, 'grid-grupales');
+
+        function scrollCarrusel(amount) {
+            document.getElementById('carrusel-especial').scrollBy({ left: amount, behavior: 'smooth' });
         }
 
-        renderGrid(fotosGaleria, 'grid-galeria');
-        renderGrid(fotosSesion, 'grid-sesion');
-        renderGrid(fotosGrupales, 'grid-grupales');
-
-        // Lógica de Pestañas
-        function switchTab(tabName, element) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-            document.getElementById('tab-' + tabName).classList.add('active');
-            element.classList.add('active');
+        function switchTab(tab, el) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            const target = document.getElementById('tab-' + tab);
+            if(target) target.classList.add('active');
+            el.classList.add('active');
         }
 
-        // Lógica del Visor
-        const viewer = document.getElementById('viewer');
-        const viewerImg = document.getElementById('viewer-img');
-        const downloadLink = document.getElementById('download-link');
-        const counter = document.getElementById('image-counter');
-
-        function openViewer(index, sourceId) {
-            // Identificar qué lista de fotos estamos viendo
-            if(sourceId === 'grid-galeria') currentList = fotosGaleria;
-            if(sourceId === 'grid-sesion') currentList = fotosSesion;
-            if(sourceId === 'grid-grupales') currentList = fotosGrupales;
+        function openViewer(index, source) {
+            if(source === 'especial') currentList = fotos_especiales;
+            else if(source === 'grid-sesion') currentList = fotos_sesion;
+            else if(source === 'grid-grupales') currentList = fotos_grupales;
+            else currentList = fotos_todas;
 
             currentIndex = index;
             updateViewer();
-            viewer.style.display = 'flex';
+            document.getElementById('viewer').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
 
         function closeViewer() {
-            viewer.style.display = 'none';
+            document.getElementById('viewer').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
 
         function updateViewer() {
-            const currentSrc = currentList[currentIndex];
-            viewerImg.src = currentSrc;
-            downloadLink.href = currentSrc;
-            // Sanitizamos el nombre de descarga
-            const downloadName = currentSrc.split('/').pop().replace(/[^a-z0-9.]/gi, '_');
-            downloadLink.download = `Genesis_15Años_${downloadName}`;
-            counter.innerText = `${currentIndex + 1} de ${currentList.length}`;
+            const src = currentList[currentIndex];
+            document.getElementById('viewer-img').src = src;
+            document.getElementById('download-link').href = src;
         }
 
         function changeImage(step) {
             currentIndex = (currentIndex + step + currentList.length) % currentList.length;
             updateViewer();
         }
-
-        // Navegación con teclado
-        window.addEventListener('keydown', (e) => {
-            if (viewer.style.display === 'flex') {
-                if (e.key === "ArrowLeft") changeImage(-1);
-                if (e.key === "ArrowRight") changeImage(1);
-                if (e.key === "Escape") closeViewer();
-            }
-        });
     </script>
 </body>
 </html>
-          
